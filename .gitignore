@@ -137,3 +137,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+.idea/dictionaries/moxii.xml
+*.xml
+.idea/TicTacToe.iml

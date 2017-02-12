@@ -8,9 +8,16 @@ class TicTacToe:
         self.board = board
         self.length = length
         self.winning_combo = winning_combo
-        self.player = 0
+        self.player = 1
         self.depth = depth
-        self.count = 1
+        self.count = 0
+
+    def isGameOver(self):
+        for y in range(0, self.length):
+            for x in range(0, self.length):
+                if self.board[y][x] is None:
+                    return False
+        return True
 
     def paintBoard(self):
         printed_board = "-" * (self.length * 4 + 1) + '\n'
@@ -92,20 +99,16 @@ class TicTacToe:
                         break
         return 0
 
-    def isGameOver(self):
-        for y in range(0, self.length):
-            for x in range(0, self.length):
-                if self.board[y][x] is None:
-                    return False
-        return True
-
     def capturePoint(self, cord):
-        if self.board[int(cord[1])][int(cord[0])] is None:
-            self.board[int(cord[1])][int(cord[0])] = - \
-                1 if self.player % 2 == 0 else 1
-            self.player += 1
+        if self.checkWin() == 0:
+            if self.board[int(cord[1])][int(cord[0])] is None:
+                self.board[int(cord[1])][int(cord[0])] = - \
+                    1 if self.player % 2 == 0 else 1
+                self.player += 1
+            else:
+                print("You Filthy Cheater!")
         else:
-            print("You Filthy Cheater!")
+            print("Game Over!")
 
     def minmax(self, depth, isMax, alpha, beta):
         bestscore = 0
@@ -149,8 +152,8 @@ class TicTacToe:
 
     def getBestMove(self, alpha, beta):
         bestval = maxsize * -1
-        row = -1
-        column = -1
+        row = None
+        column = None
 
         for y in range(0, self.length):
             for x in range(0, self.length):
@@ -164,3 +167,7 @@ class TicTacToe:
                         bestval = value
         print(row)
         print(column)
+        if self.player % 2 != 0 and (row or column) != None:
+            self.capturePoint(str(column) + str(row))
+        else:
+            print("You win! The computer gave up")
